@@ -28,3 +28,25 @@ void main() {
   print('Slices: ${pizzaFromJson.numSlices}');
   print('Meat: ${pizzaFromJson.meatChoice}');
 }
+
+// Add to pizza_tester.dart
+void testOrderSerialization() {
+  final customer = Customer(
+    name: "John Doe",
+    address: "123 Pizza St",
+    phoneNumber: "555-1234",
+  );
+
+  final order = Order(
+    customer: customer,
+    pizzas: [testPizza], // From previous test
+    orderType: OrderType.delivery,
+  );
+
+  print('\n--- Order JSON ---');
+  print(order.toJson());
+
+  final orderFromJson = Order.fromJson(order.toJson());
+  print('\n--- Order from JSON ---');
+  print(orderFromJson);
+}

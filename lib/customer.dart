@@ -1,42 +1,26 @@
-/// Customer class representing customer information
-/// Author: [Your Name]
-/// Registration: [Your Registration Number]
-
 class Customer {
-  String _name;
-  String _address;
-  String _phoneNumber;
+  final String name;
+  final String address;
+  final String phoneNumber;
 
-  Customer(this._name, this._address, this._phoneNumber);
-
-  // Getters and setters
-  String get name => _name;
-  set name(String value) => _name = value;
-
-  String get address => _address;
-  set address(String value) => _address = value;
-
-  String get phoneNumber => _phoneNumber;
-  set phoneNumber(String value) => _phoneNumber = value;
-
-  @override
-  String toString() {
-    return 'Customer: $_name, $_address, $_phoneNumber';
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'name': _name,
-      'address': _address,
-      'phoneNumber': _phoneNumber,
-    };
-  }
+  Customer({
+    required this.name,
+    required this.address,
+    required this.phoneNumber,
+  });
 
   factory Customer.fromJson(Map<String, dynamic> json) {
     return Customer(
-      json['name'],
-      json['address'],
-      json['phoneNumber'],
+      name: json['name'] ?? 'Unknown',
+      address: json['address'] ?? '',
+      phoneNumber: json['phoneNumber'] ?? '',
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {'name': name, 'address': address, 'phoneNumber': phoneNumber};
+  }
+
+  @override
+  String toString() => '$name ($phoneNumber)';
 }

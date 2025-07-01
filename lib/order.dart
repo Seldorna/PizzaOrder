@@ -1,6 +1,6 @@
-import 'package:pizza_order/customer.dart';
-import 'package:pizza_order/pizza.dart';
-import 'package:pizza_order/enums.dart';
+import 'customer.dart';
+import 'pizza.dart';
+import 'enums.dart';
 
 class Order {
   final String orderId;
@@ -16,17 +16,31 @@ class Order {
     required this.orderType,
     String? orderId,
     DateTime? orderDate,
-  })  : orderId = orderId ?? _generateOrderId(),
-        orderDate = orderDate ?? DateTime.now(),
-        discount = pizzas.length > 1 ? 0.05 : 0.0;
+  }) : orderId = orderId ?? _generateOrderId(),
+       orderDate = orderDate ?? DateTime.now(),
+       discount = pizzas.length > 1 ? 0.05 : 0.0;
 
-  static String _generateOrderId() {
-    return 'ORD${DateTime.now().millisecondsSinceEpoch}';
-  }
+  static String _generateOrderId() =>
+      'ORD${DateTime.now().millisecondsSinceEpoch}';
 
   double get totalPrice {
-    double total = pizzas.fold(0.0, (sum, pizza) => sum + pizza.calculatePrice());
-    return total * (1 - discount);
+    return pizzas.fold(0.0, (sum, pizza) => sum + pizza.calculatePrice()) *
+        (1 - discount);
+  }
+
+  factory Order.fromJson(Map<String, dynamic> json) {
+    return Order(
+      customer: Customer.fromJson(json['customer']),
+      pizzas: (json['pizzas'] as List)
+          .map((pizzaJson) => Pizza.fromJson(pizzaJson))
+          .toList(),
+      orderType: OrderType.values.firstWhere(
+        (e) => e.toString() == json['orderType'],
+        orElse: () => OrderType.delivery,
+      ),
+      orderId: json['orderId'],
+      orderDate: DateTime.parse(json['orderDate']),
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -41,28 +55,11 @@ class Order {
     };
   }
 
-  factory Order.fromJson(Map<String, dynamic> json) {
-    return Order(
-      customer: Customer.fromJson(json['customer']),
-      pizzas: (json['pizzas'] as List)
-          .map((pizzaJson) => Pizza.fromJson(pizzaJson))
-          .toList(),
-      orderType: OrderType.values.firstWhere(
-            (e) => e.toString() == json['orderType'],
-        orElse: () => OrderType.DELIVERY, // default value if not found
-      ),
-      orderId: json['orderId'],
-      orderDate: DateTime.parse(json['orderDate']),
-    );
-  }
-
   @override
   String toString() {
     return 'Order #$orderId (${orderDate.toLocal()})\n'
         'Customer: ${customer.name}\n'
-        'Type: ${orderType.toString().split('.').last}\n'
         'Pizzas: ${pizzas.length}\n'
-        'Discount: ${(discount * 100).toInt()}%\n'
         'Total: \$${totalPrice.toStringAsFixed(2)}';
   }
 }
