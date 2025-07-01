@@ -36,7 +36,7 @@ class Order {
           .toList(),
       orderType: OrderType.values.firstWhere(
         (e) => e.toString() == json['orderType'],
-        orElse: () => OrderType.delivery,
+        orElse: () => OrderType.DELIVERY, // Default to DELIVERY if not found
       ),
       orderId: json['orderId'],
       orderDate: DateTime.parse(json['orderDate']),
