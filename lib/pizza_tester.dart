@@ -26,7 +26,7 @@ class PizzaTester {
       numSlices: 6,
       meatChoice: MeatType.ham,
       vegChoice: VeggieType.onions,
-      crustType: CrustType.thick,
+      crustType: CrustType.thin,
       toppings: {Topping.cheese},
       size: Size.medium,
     );

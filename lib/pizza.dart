@@ -8,6 +8,16 @@ class Pizza {
   final Set<Topping> toppings;
   final Size size;
 
+  // Pricing constants
+  static const double _basePrice = 8.0;
+  static const Map<Size, double> _sizeMultipliers = {
+    Size.small: 0.9,
+    Size.medium: 1.0,
+    Size.large: 1.2,
+  };
+  static const double _premiumCrustFee = 1.5;
+  static const double _toppingPrice = 0.5;
+
   Pizza.custom({
     required this.numSlices,
     required this.meatChoice,
@@ -17,6 +27,35 @@ class Pizza {
     required this.size,
   });
 
+  // Add price calculation method
+  double calculatePrice() {
+    double price = _basePrice;
+    
+    // Size multiplier
+    price *= _sizeMultipliers[size] ?? 1.0;
+    
+    // Premium crust fee
+    if (crustType == CrustType.thin || crustType == CrustType.stuffed) {
+      price += _premiumCrustFee;
+    }
+    
+    // Toppings
+    price += toppings.length * _toppingPrice;
+    
+    // Meat premium
+    if (meatChoice != MeatType.none) {
+      price += 1.0;
+    }
+    
+    return price;
+  }
+  @override
+  String toString() {
+    return 'Pizza(numSlices: $numSlices, meatChoice: $meatChoice, '
+        'vegChoice: $vegChoice, crustType: $crustType, '
+        'toppings: ${toppings.join(', ')}, size: $size, '
+        'price: \$${calculatePrice().toStringAsFixed(2)})';
+  }
   // Add fromJson factory
   factory Pizza.fromJson(Map<String, dynamic> json) {
     return Pizza.custom(
@@ -58,3 +97,4 @@ class Pizza {
     };
   }
 }
+  
