@@ -8,8 +8,7 @@ class PizzaCard extends StatelessWidget {
   final VeggieType? veggie;
   final Set<Topping> toppings;
   final int numSlices;
-  
-  final dynamic showFullDetails;
+
 
   const PizzaCard({
     super.key,
@@ -19,7 +18,6 @@ class PizzaCard extends StatelessWidget {
     required this.veggie,
     required this.toppings,
     required this.numSlices,
-    this.showFullDetails = false,
   });
 
   @override
