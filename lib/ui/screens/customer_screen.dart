@@ -91,31 +91,6 @@ class _CustomerScreenState extends State<CustomerScreen> {
     );
   }
 
-  Map<String, dynamic> getCustomerData() {
-    return {
-      'isDelivery': _isDelivery,
-      'name': _nameController.text,
-      'phone': _phoneController.text,
-      'address': _addressController.text,
-    };
-  }
-
-  bool validateInputs() {
-    if (_nameController.text.isEmpty || _phoneController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all required fields')),
-      );
-      return false;
-    }
-    if (_isDelivery && _addressController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a delivery address')),
-      );
-      return false;
-    }
-    return true;
-  }
-
   @override
   void dispose() {
     _nameController.dispose();
